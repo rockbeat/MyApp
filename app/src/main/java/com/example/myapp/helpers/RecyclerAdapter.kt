@@ -17,7 +17,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     var beers: MutableList<Beer> = ArrayList()
     lateinit var context: Context
 
-    fun RecyclerAdapter(beers: MutableList<Beer>, context: Context) {
+    fun recyclerAdapter(beers: MutableList<Beer>, context: Context) {
         this.beers = beers
         this.context = context
     }

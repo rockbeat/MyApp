@@ -16,7 +16,6 @@ import com.example.myapp.viewmodel.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -69,7 +68,7 @@ class MainFragment : Fragment() {
             mRecyclerView.setHasFixedSize(true)
             mRecyclerView.layoutManager =
                 LinearLayoutManager(requireActivity().applicationContext)
-            mAdapter.RecyclerAdapter(beers, requireActivity().applicationContext)
+            mAdapter.recyclerAdapter(beers, requireActivity().applicationContext)
             mRecyclerView.adapter = mAdapter
         }
 
