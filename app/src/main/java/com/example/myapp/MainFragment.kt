@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.databinding.FragmentMainBinding
 import com.example.myapp.helpers.RecyclerAdapter
-import com.example.myapp.model.Beer
 import com.example.myapp.viewmodel.MainViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,6 +46,7 @@ class MainFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
         return binding.root
 
     }
@@ -51,23 +55,24 @@ class MainFragment : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /*  binding.textView.text = "Bienvenido: " + idPersona
-
-          binding.logout.setOnClickListener {
-              findNavController().navigate(R.id.action_do_logout)
-          }*/
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setUpRecyclerView()
+
     }
 
     private fun setUpRecyclerView() {
-        mRecyclerView = binding.beersRecycler
-        mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(requireActivity().applicationContext)
-        mAdapter.RecyclerAdapter(viewModel.getBeers(), requireActivity().applicationContext)
-        mRecyclerView.adapter = mAdapter
+        GlobalScope.launch(Dispatchers.Main) {
+            var beers = viewModel.getBeers()
+
+            mRecyclerView = binding.beersRecycler
+            mRecyclerView.setHasFixedSize(true)
+            mRecyclerView.layoutManager =
+                LinearLayoutManager(requireActivity().applicationContext)
+            mAdapter.RecyclerAdapter(beers, requireActivity().applicationContext)
+            mRecyclerView.adapter = mAdapter
+        }
+
     }
 
 

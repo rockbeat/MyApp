@@ -1,13 +1,11 @@
 package com.example.myapp.services
 
-import com.example.myapp.dto.LoginRequest
-import com.example.myapp.dto.LoginResponse
-import retrofit2.Call
-import retrofit2.http.POST
+import com.example.myapp.dto.BeersResponse
+import com.example.myapp.model.Beer
+import retrofit2.Response
+import retrofit2.http.GET
 
 interface IAPIServices {
-    interface APIService {
-        @POST
-        fun login(request: LoginRequest): Call<LoginResponse>
-    }
+    @GET("v2/beers")
+    suspend fun getBeers(): Response<ArrayList<Beer>>
 }

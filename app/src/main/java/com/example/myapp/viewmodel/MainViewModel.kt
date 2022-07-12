@@ -1,13 +1,25 @@
 package com.example.myapp.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.myapp.dto.BeersResponse
 import com.example.myapp.model.Beer
+import com.example.myapp.services.APIServices
 
 class MainViewModel : ViewModel() {
 
 
-    fun getBeers(): MutableList<Beer> {
+    suspend fun getBeers() : MutableList<Beer> {
 
+        var response = APIServices().getBeers()
+        var beersList: MutableList<Beer> = ArrayList(response)
+        return beersList
+
+
+    }
+
+    /*suspend fun getBeers(): MutableList<Beer> {
+
+        getBers()
         var beersList: MutableList<Beer> = ArrayList()
         beersList.add(
             Beer(
@@ -213,4 +225,5 @@ class MainViewModel : ViewModel() {
 
         return beersList
     }
+*/
 }

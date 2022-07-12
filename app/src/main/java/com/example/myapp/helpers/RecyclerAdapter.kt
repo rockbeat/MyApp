@@ -56,7 +56,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
                     Toast.LENGTH_SHORT
                 ).show()
             })
-            beerImg.loadUrl(beer.img_url)
+            beerImg.loadUrl(beer.image_url)
         }
 
         fun ImageView.loadUrl(url: String) {
