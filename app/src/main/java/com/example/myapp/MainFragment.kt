@@ -2,12 +2,19 @@ package com.example.myapp
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.databinding.FragmentMainBinding
+import com.example.myapp.helpers.RecyclerAdapter
+import com.example.myapp.model.Beer
+import com.example.myapp.viewmodel.MainViewModel
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,34 +28,48 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class MainFragment : Fragment() {
-    private var _binding: FragmentMainBinding? = null
+    private lateinit var mItems: ArrayList<String>
+    private lateinit var binding: FragmentMainBinding
+    private val viewModel: MainViewModel by viewModels()
+    lateinit var mRecyclerView: RecyclerView
+    val mAdapter: RecyclerAdapter = RecyclerAdapter()
 
-    private val binding get() = _binding!!
-
-    private var idPersona : String? = ""
+    private var idPersona: String? = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
         return binding.root
+
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        idPersona = arguments?.getString("userId", "idPersona")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.textView.text = "Bienvenido: " + idPersona
+        /*  binding.textView.text = "Bienvenido: " + idPersona
 
-        binding.logout.setOnClickListener {
-            findNavController().navigate(R.id.action_do_logout)
-        }
+          binding.logout.setOnClickListener {
+              findNavController().navigate(R.id.action_do_logout)
+          }*/
+        setUpRecyclerView()
     }
+
+    private fun setUpRecyclerView() {
+        mRecyclerView = binding.beersRecycler
+        mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.layoutManager = LinearLayoutManager(requireActivity().applicationContext)
+        mAdapter.RecyclerAdapter(viewModel.getBeers(), requireActivity().applicationContext)
+        mRecyclerView.adapter = mAdapter
+    }
+
 
     companion object {
         /**

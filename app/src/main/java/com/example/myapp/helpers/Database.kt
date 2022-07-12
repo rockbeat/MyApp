@@ -1,6 +1,7 @@
 package com.example.myapp.helpers
 
 import android.content.Context
+import android.util.Base64
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -11,6 +12,16 @@ import com.example.myapp.db.UsuariosDAO
 abstract class Database : RoomDatabase() {
 
     abstract fun usuarioDao(): UsuariosDAO
+
+    fun registerUser(usuario : String, password : String){
+        var passEncoded : String = Base64.encodeToString(password.toByteArray(), 0)
+        usuarioDao().registerUser(UsuarioEntity(1, usuario, passEncoded))
+    }
+
+    fun doLogin(usuario : String, password : String) : MutableList<UsuarioEntity>{
+        var passEncoded : String = Base64.encodeToString(password.toByteArray(), 0)
+        return usuarioDao().validateUser(usuario, passEncoded)
+    }
 
     companion object {
         private var INSTANCE: com.example.myapp.helpers.Database? = null

@@ -11,9 +11,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.myapp.databinding.FragmentLoginBinding
 import com.example.myapp.viewmodel.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.example.myapp.db.UsuarioEntity
-import com.example.myapp.db.UsuariosDAO
 import com.example.myapp.helpers.Database
+import androidx.appcompat.app.AppCompatActivity
+
+
+
 
 
 /**
@@ -41,15 +43,16 @@ class LoginFragment : Fragment() {
         binding.buttonFirst.setOnClickListener {
             val args = Bundle()
             var res = validateUserPass()
-            if (res!="ERROR") {
+            if(res == "VACIOS"){
+                //BORDER COLOR
+                binding.editTextTextPersonName.error = "Campos vacios"
+                binding.editTextTextPassword.error = "Campos vacios"
+            }
+            else if (res!="ERROR") {
                 args.putString("userId", res)
                 findNavController().navigate(R.id.action_do_login, args)
             } else {
-
-                Snackbar.make(view, "Usuario incorrecto", Snackbar.LENGTH_LONG)
-                    .setAction("Recuperar contraseña", View.OnClickListener {
-                        findNavController().navigate(R.id.action_recover_password)
-                    }).show()
+                Snackbar.make(view, "Usuario y contraseña incorrectos, intente de nuevo.", Snackbar.LENGTH_LONG).show()
             }
         }
 
@@ -58,9 +61,9 @@ class LoginFragment : Fragment() {
 
 
     private fun initBD(){
-        var db: UsuariosDAO = Database.getInstance(requireActivity().applicationContext)?.usuarioDao()!!
-        //db.deleteAll()
-        db.registerUser(UsuarioEntity(1, "rockbeat", "1234"))
+        var db: Database? = Database.getInstance(requireActivity().applicationContext)
+        db?.usuarioDao()!!.deleteAll()
+        db?.registerUser("rockbeat", "1234")
     }
 
     private fun validateUserPass(): String {
@@ -69,5 +72,15 @@ class LoginFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
 }
