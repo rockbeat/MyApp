@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.databinding.FragmentMainBinding
 import com.example.myapp.helpers.RecyclerAdapter
+import com.example.myapp.model.Beer
 import com.example.myapp.viewmodel.MainViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -61,15 +60,20 @@ class MainFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        GlobalScope.launch(Dispatchers.Main) {
-            var beers = viewModel.getBeers()
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+        val deferred1: Deferred<MutableList<Beer>> = coroutineScope.async {
+            viewModel.getBeers()
+        }
 
+
+        coroutineScope.launch(Dispatchers.Main) {
+            var res = deferred1.await()
             mRecyclerView = binding.beersRecycler
             mRecyclerView.setHasFixedSize(true)
             mRecyclerView.layoutManager =
                 LinearLayoutManager(requireActivity().applicationContext)
-            mAdapter.recyclerAdapter(beers, requireActivity().applicationContext)
             mRecyclerView.adapter = mAdapter
+            mAdapter.recyclerAdapter(res, requireActivity().applicationContext)
         }
 
     }

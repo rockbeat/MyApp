@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/drome/Documents/Developer/MyApp/app/src/main/res/layout/activity_beers.xml" value="0.24547101449275363" />
+        <entry key="..\:/Users/drome/Documents/Developer/MyApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/drome/Documents/Developer/MyApp/app/src/main/res/layout/content_main.xml" value="0.24547101449275363" />
+        <entry key="..\:/Users/drome/Documents/Developer/MyApp/app/src/main/res/layout/fragment_login.xml" value="0.24547101449275363" />
+        <entry key="..\:/Users/drome/Documents/Developer/MyApp/app/src/main/res/layout/fragment_main.xml" value="0.24547101449275363" />
         <entry key="..\:/Users/dromerof/AndroidStudioProjects/MyApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/dromerof/AndroidStudioProjects/MyApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/dromerof/AndroidStudioProjects/MyApp/app/src/main/res/layout/activity_main.xml" value="0.45372460496614" />

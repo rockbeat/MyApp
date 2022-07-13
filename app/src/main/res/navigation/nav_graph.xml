@@ -9,10 +9,10 @@
         android:id="@+id/loginFragment"
         android:name="com.example.myapp.LoginFragment"
         android:label="LOGIN"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_do_login"
-            app:destination="@id/mainFragment"
+            app:destination="@id/beersActivity"
             app:popUpTo="@+id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
@@ -20,18 +20,29 @@
         android:id="@+id/mainFragment"
         android:name="com.example.myapp.MainFragment"
         android:label="My first app"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_do_logout"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_beer_detail"
+            app:destination="@id/beerDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/recoverFragment"
-        android:name="com.example.myapp.RecoverPassFragment"
-        android:label="Recover password"
-        tools:layout="@layout/fragment_recoverpass" >
+        android:id="@+id/beerDetailFragment"
+        android:name="com.example.myapp.BeerDetailFragment"
+        android:label="Beer detail"
+        tools:layout="@layout/fragment_beer_detail">
         <action
             android:id="@+id/action_back_login"
             app:destination="@id/loginFragment" />
     </fragment>
+
+    <activity
+        android:id="@+id/beersActivity"
+        android:name="com.example.myapp.BeersActivity"
+        android:label="Beer detail"
+        tools:layout="@layout/activity_beers">
+
+    </activity>
 </navigation>
