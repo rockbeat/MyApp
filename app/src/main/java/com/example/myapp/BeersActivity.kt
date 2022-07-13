@@ -1,24 +1,21 @@
 package com.example.myapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapp.model.Beer
-import kotlinx.coroutines.*
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.navigation.findNavController
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.databinding.ActivityBeersBinding
-import com.example.myapp.databinding.ActivityMainBinding
 import com.example.myapp.helpers.RecyclerAdapter
+import com.example.myapp.model.Beer
 import com.example.myapp.viewmodel.BeersViewModel
-import com.example.myapp.viewmodel.MainViewModel
+import kotlinx.coroutines.*
+import kotlin.system.exitProcess
 
 class BeersActivity : AppCompatActivity() {
 
@@ -39,7 +36,7 @@ class BeersActivity : AppCompatActivity() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        
+
         setUpRecyclerView()
     }
 
@@ -49,7 +46,6 @@ class BeersActivity : AppCompatActivity() {
             viewModel.getBeers()
         }
 
-
         coroutineScope.launch(Dispatchers.Main) {
             var res = deferred1.await()
             mRecyclerView = binding.beersRecycler
@@ -58,6 +54,55 @@ class BeersActivity : AppCompatActivity() {
                 LinearLayoutManager(applicationContext)
             mRecyclerView.adapter = mAdapter
             mAdapter.recyclerAdapter(res, applicationContext)
+        }
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_exit -> {
+                showExitDialog()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onBackPressed() {
+        showExitDialog()
+    }
+
+    private fun showExitDialog(){
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(R.string.dialog_title)
+            .setMessage(R.string.dialog_exit_message)
+            .setNegativeButton(R.string.dialog_cancel_btn) { view, _ ->
+                view.dismiss()
+            }
+            .setPositiveButton(R.string.dialog_accept_btn) { view, _ ->
+                view.dismiss()
+                moveTaskToBack(true);
+                exitProcess(-1)
+            }
+            .setCancelable(false)
+            .create()
+
+        dialog.show()
+    }
+    companion object {
+
+        const val TAG = "BeerDetailDialog"
+
+
+        fun newInstance(): BeersActivity {
+            val activity = BeersActivity()
+            return activity
         }
 
     }

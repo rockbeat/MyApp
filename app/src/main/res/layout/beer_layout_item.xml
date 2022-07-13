@@ -1,34 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
     <ImageView
         android:id="@+id/beerImg"
+        android:layout_centerVertical="true"
         android:layout_margin="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="100dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:maxWidth="100dp"
+        android:maxHeight="100dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:scaleType="centerInside" />
-    <TextView
-        android:id="@+id/beerName"
-        android:layout_marginTop="15dp"
+        android:scaleType="centerInside"
+        android:contentDescription="BEER"
+        tools:ignore="HardcodedText" />
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/beerImg"
-        android:layout_toEndOf="@+id/beerImg"
-        android:text= "dadawdawdwd" />
-    <TextView
-        android:id="@+id/beerTagline"
+        android:layout_toStartOf="@id/favIcon"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/beerImg">
+        <TextView
+            android:id="@+id/beerName"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            tools:text= "Lorem ipsum" />
+        <TextView
+            android:id="@+id/beerTagline"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:breakStrategy="simple"
+            tools:text = "Lorem ipsum dolor sit amet"/>
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/favIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_below="@+id/beerName"
-        android:layout_toEndOf="@+id/beerImg"
-        android:text = "wdasddadawd"/>
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:button="@drawable/custom_fav_checkbox"
+        android:clickable="true"
+        android:focusable="true"/>
 </RelativeLayout >
