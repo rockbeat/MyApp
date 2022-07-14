@@ -63,7 +63,7 @@ class LoginFragment : Fragment() {
     private fun initBD(){
         var db: Database? = Database.getInstance(requireActivity().applicationContext)
         db?.usuarioDao()!!.deleteAll()
-        db?.registerUser("rockbeat", "1234")
+        db?.registerUser("intercam", "1234")
     }
 
     private fun validateUserPass(): String {

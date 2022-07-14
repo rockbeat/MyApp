@@ -10,4 +10,6 @@
     <string name="dialog_exit_message">¿Deseas salir de la aplicación?</string>
     <string name="dialog_cancel_btn">Cancelar</string>
     <string name="dialog_accept_btn">Aceptar</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

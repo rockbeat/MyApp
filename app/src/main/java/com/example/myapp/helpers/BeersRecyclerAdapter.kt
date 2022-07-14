@@ -11,11 +11,16 @@ import com.example.myapp.model.Beer
 import com.squareup.picasso.Picasso
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapp.BeerDetailDialog
+import android.util.SparseBooleanArray
 
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+
+
+
+class BeersRecyclerAdapter : RecyclerView.Adapter<BeersRecyclerAdapter.ViewHolder>() {
     var beers: MutableList<Beer> = ArrayList()
     lateinit var context: Context
+    var itemStateArray = SparseBooleanArray()
 
     fun recyclerAdapter(beers: MutableList<Beer>, context: Context) {
         this.beers = beers
@@ -23,19 +28,8 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = beers.get(position)
-        holder.bind(item, context)
-
-        var db: Database? = Database.getInstance(context)
-        var isFav = db!!.isBeerFavourite(item.id)
-        holder.favCheck.isChecked = isFav
-        holder.favCheck.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-            override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-                //set your object's last status
-                if (isChecked) db.saveFavourite(item.id)
-                else db.deleteFavourite(item.id)
-            }
-        })
+        val item = beers[position]
+        holder.bind(item, context, position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -58,21 +52,33 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
         val beerTagline = view.findViewById(R.id.beerTagline) as TextView
         val beerImg = view.findViewById(R.id.beerImg) as ImageView
         val favCheck = view.findViewById(R.id.favIcon) as CheckBox
-        fun bind(beer: Beer, context: Context) {
+        fun bind(beer: Beer, context: Context, position : Int) {
             beerName.text = beer.name
             beerTagline.text = beer.tagline
-            itemView.setOnClickListener(View.OnClickListener {
+
+            var db: Database? = Database.getInstance(context)
+            var isFav = db!!.isBeerFavourite(beer.id)
+            favCheck.isChecked = isFav
+            itemStateArray.put(position, isFav)
+
+            itemView.setOnClickListener {
                 val dialogFragment: BeerDetailDialog = BeerDetailDialog.newInstance(beer)
                 val activity = it.context as AppCompatActivity
                 dialogFragment.show(activity.supportFragmentManager, null)
+            }
 
-                Toast.makeText(
-                    context,
-                    beer.method?.twist.toString(),
-                    Toast.LENGTH_LONG
-                ).show()
-            })
             beerImg.loadUrl(beer.image_url!!)
+
+            favCheck.setOnCheckedChangeListener { view, isChecked -> //set your object's last status
+                var checked = itemStateArray.get(adapterPosition, false)
+                if(!checked){
+                    itemStateArray.put(adapterPosition, true)
+                    db.saveFavourite(beer)
+                }else{
+                    itemStateArray.put(adapterPosition, false)
+                    db.deleteFavourite(beer)
+                }
+            }
         }
 
         fun ImageView.loadUrl(url: String) {

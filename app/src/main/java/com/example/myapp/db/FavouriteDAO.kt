@@ -12,4 +12,10 @@ interface FavouriteDAO {
 
     @Delete
     fun deleteFavourite(user: FavouriteEntity)
+
+    @Update
+    fun rateBeer(beer : FavouriteEntity)
+
+    @Query("SELECT * FROM favs")
+    fun getAllFavourites(): List<FavouriteEntity>
 }

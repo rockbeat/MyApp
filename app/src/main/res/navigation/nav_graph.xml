@@ -12,15 +12,32 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_do_login"
-            app:destination="@id/beersActivity"
+            app:destination="@id/beersFragment"
             app:popUpTo="@+id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 
-    <activity
+
+
+    <fragment
+        android:id="@+id/beersFragment"
+        android:name="com.example.myapp.BeersFragment"
+        android:label="Beers"
+        tools:layout="@layout/fragment_login">
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/rateBeerFragment"
+        android:name="com.example.myapp.RateBeerFragment"
+        android:label="Beers"
+        tools:layout="@layout/rate_beer_fragment">
+    </fragment>
+
+    <!--<activity
         android:id="@+id/beersActivity"
         android:name="com.example.myapp.BeersActivity"
         android:label="Beer detail"
         tools:layout="@layout/activity_beers">
-    </activity>
+    </activity>-->
 </navigation>

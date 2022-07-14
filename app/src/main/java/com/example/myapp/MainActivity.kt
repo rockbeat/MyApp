@@ -1,12 +1,17 @@
 package com.example.myapp
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.myapp.databinding.ActivityMainBinding
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,15 +29,60 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.loginFragment
+                R.id.loginFragment,
+                R.id.beersFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == R.id.action_exit) {
+            showExitDialog()
+            return true
+        }
+        if (id == R.id.action_favs) {
+            val navHostFragment = findNavController(R.id.nav_host_fragment_content_main)
+            navHostFragment.navigate(R.id.rateBeerFragment)
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        showExitDialog()
+    }
+
+    private fun showExitDialog() {
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(R.string.dialog_title)
+            .setMessage(R.string.dialog_exit_message)
+            .setNegativeButton(R.string.dialog_cancel_btn) { view, _ ->
+                view.dismiss()
+            }
+            .setPositiveButton(R.string.dialog_accept_btn) { view, _ ->
+                view.dismiss()
+                moveTaskToBack(true);
+                exitProcess(-1)
+            }
+            .setCancelable(false)
+            .create()
+
+        dialog.show()
     }
 }
